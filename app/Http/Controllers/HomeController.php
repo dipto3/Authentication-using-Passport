@@ -22,10 +22,22 @@ class HomeController extends Controller
 
    public function c_store(Request $request){
 
-    $input = $request->all();
-   $category = Category::create($input);
-     
-    return response()->json(['category'=>$category]);
+    $user  = Auth::user();
+    // $user_id = $user->id;
+    // $totacat = Category::where('uid',$user_id)->count();
+    // return $totacat;
+    if($user){
+        // $foruserid = Auth::user();
+        //     $user_id = $foruserid->id;
+        //     $request->uid =  $user_id;
+        
+        $input = [...$request->all(), 'uid' =>$user->id];
+        $category = Category::create($input);
+        return response()->json(['category'=>$category]);
+    }else{
+        return response()->json(['status'=>'fail','message'=>'Unauthorized User ']);
+    }
+
 
    }
 
@@ -78,7 +90,7 @@ class HomeController extends Controller
     $validator = Validator::make($request->all(),[
 
        
-        'email'=>'required|email',
+    'email'=>'required|email',
         'password'=>'required',
 
     ]);
@@ -97,6 +109,22 @@ class HomeController extends Controller
         return response()->json(['status'=>'fail','message'=>'fails']);
     }
 
+   }
+
+   public function show_category($id){
+
+
+        $user  = Auth::user();
+        $user_id = $user->id;
+    //  return $user_id;
+       
+            $totacat = Category::where('uid',$id)->count();
+// return $totacat;
+            $allcat = Category::where('uid',$id)->get();
+           
+            return response()->json(['status'=>'success', 'TotalCategory'=>$totacat,'AllCategory'=>$allcat]);
+        
+     
    }
    
 }
