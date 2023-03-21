@@ -21,12 +21,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('auth:api')->group(function(){
     Route::post('/c-store', [HomeController::class, 'c_store']);
     Route::get('/show-category/{id}', [HomeController::class, 'show_category']);
+    Route::post('/p-store', [HomeController::class, 'p_store']);
+    Route::get('/show-product/{id}', [HomeController::class, 'show_product']);
+    
 });
 Route::post('/store', [HomeController::class, 'store']);
 
 
 
-Route::post('/p-store', [HomeController::class, 'p_store']);
+
 Route::get('/show', [HomeController::class, 'show']);
 
 Route::post('/register', [HomeController::class, 'register']);

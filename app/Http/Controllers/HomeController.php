@@ -126,5 +126,27 @@ class HomeController extends Controller
         
      
    }
+
+   
+
+   public function show_product($id){
+
+        $user  = Auth::user();
+        $user_id = $user->id;
+        $allcat = Category::where('uid',$user_id)->get();
+
+
+        // foreach($allcat as $category){
+        //     $product = Product::where('cat_id', $category->id)->get();
+        //     if($product) {
+        //         $category['Products'] = [...$product];
+        //     }
+        // }
+        
+        $product = Category::has('products')->with('products')->get();
+      
+        
+        return response()->json(['status'=>'success', 'AllCategory'=>$product]);
+   }
    
 }
