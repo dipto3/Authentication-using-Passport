@@ -148,5 +148,29 @@ class HomeController extends Controller
         
         return response()->json(['status'=>'success', 'AllCategory'=>$product]);
    }
+
+   //web
+
+   public function index(){
+
+    $products = Product::all(); 
+
+    return view('welcome',compact('products'));
+   }
+
+   //search 
+   public function search(Request $request){
+
+        $products = $request->search_string!='' ? Product::where('name','like','%'.$request->search_string.'%')->get() : Product::all();
+
+        // if($products->count() >=1 ){
+        //     return view('welcome',compact('products'));
+        // }else{
+        //     return response()->json(['status'=>'nothingFound']);
+        // }
+
+        return response()->json(['status'=>$products->count() >=1 ? true : false, 'products' => $products]);
+                      
+   }
    
 }
