@@ -15,4 +15,7 @@ use App\Http\Controllers\HomeController;
 
 
 Route::get('/', [HomeController::class, 'index']);
+
 Route::get('/search', [HomeController::class, 'search'])->name('search');
+Route::get('/category-by-user', [HomeController::class, 'categoryByUser'])->name('categoryByUser');
+Route::get('/product-by-category', [HomeController::class, 'productBycategory'])->name('productBycategory');

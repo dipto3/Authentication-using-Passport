@@ -42,7 +42,7 @@ class HomeController extends Controller
    }
 
    public function p_store(Request $request){
-
+    
     $input = $request->all();
    $product = Product::create($input);
      
@@ -151,11 +151,18 @@ class HomeController extends Controller
 
    //web
 
-   public function index(){
+   public function index(Request $request){
 
     $products = Product::all(); 
-
-    return view('welcome',compact('products'));
+    // $product = Category::has('products')->with('products')->get();
+    $users = User::all();
+    $user  = Auth::user();
+  
+    
+    $category = Category::where('uid',$request->id)->get();
+    // $category = User::has('categories')->with('categories')->get();
+    // return response()->json(['status'=>'success','cate'=>$products, 'products'=>$products,'users'=>$users]);
+    return view('welcome',compact('products','users','category'));
    }
 
    //search 
@@ -171,6 +178,17 @@ class HomeController extends Controller
 
         return response()->json(['status'=>$products->count() >=1 ? true : false, 'products' => $products]);
                       
+   }
+
+   public function categoryByUser(Request $request){
+        $categories = Category::where('uid', $request->id)->get();
+        return response()->json(['status'=>$categories->count() >=1 ? true : false, 'data' => $categories]);
+   }
+
+   public function productBycategory(Request $request){
+    $products = Product::where('cat_id', $request->id)->get();
+    return response()->json(['status'=>$products->count() >=1 ? true : false, 'data' => $products]);
+
    }
    
 }

@@ -28,6 +28,8 @@ Route::middleware('auth:api')->group(function(){
 Route::post('/store', [HomeController::class, 'store']);
 
 
+// Route::get('/', [HomeController::class, 'index']);
+
 
 
 Route::get('/show', [HomeController::class, 'show']);
