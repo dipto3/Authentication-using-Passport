@@ -79,7 +79,7 @@
         <div class="table-data">
             <label for="">Search</label>
             <input type="text" name="search" id="search" class="mb-3 form-control"  placeholder="Search...">
-        <table class="table">
+        <table class="table" id="example1">
             <thead>
               <tr>
                 <th scope="col">id</th>
@@ -197,7 +197,7 @@ function onClick(id) {
               success:function(res){
                   let str = '';
                   res.data.forEach(el =>{
-                    str+=`<li onclick="onClick(${el.id})">
+                    str+=`<li>
                             <span class="dropdown-item" id="cat_${el.id}">${el.name}</span>
                           </li>`
                   })
@@ -209,6 +209,7 @@ function onClick(id) {
     
 
         function callSearch(search_string){
+      
             $.ajax({
                 url:"{{route('search')}}",
                 method:'GET',
@@ -222,8 +223,8 @@ function onClick(id) {
                                     <td> ${p.cat_name} </td>
                                     <td> 
                                       <label class="switch">
-                                          <input name="status" id = "${p.id}" 
-                                           value="${p.status}" type="checkbox" @php if ($product->status == 1) echo "checked";@endphp checked>
+                                          <input  name="status" class="switch_change" id ="${p.id}" 
+                                           value="${p.status}" type="checkbox" ${p.status == 1 ? 'checked': ''}>
                                           <span class="slider round"></span>
                                       </label> 
                                     </td>
@@ -233,6 +234,7 @@ function onClick(id) {
                 }
             });
         }
+
 
 
         $(document).ready(function(){
@@ -257,7 +259,35 @@ function onClick(id) {
                 onClick(CatId)
 
             })
+
+     
         });
     </script> 
+    <script>
+      $(document).ready(function (){
+          $("#example1").DataTable()
+      });
+      $("body").on("change", '.switch_change', function(e) {
+          e.preventDefault();
+          var status = $(this).prop('checked') == true ? 1 : 0;
+          var id = $(this).attr('id');
+
+          $.ajax({
+            
+              url: "{{route('status')}}",
+              type: "POST",
+              data: {
+                  _token: "{{csrf_token()}}",
+                  status: status,
+                  id: id
+              },
+            
+              success: function (data) {
+            
+              }
+          });
+      });
+      
+    </script>
   </body>
 </html>
