@@ -75,11 +75,62 @@
    
     <div class="container">
         
+
+      
        
         <div class="table-data">
             <label for="">Search</label>
             <input type="text" name="search" id="search" class="mb-3 form-control"  placeholder="Search...">
-        <table class="table" id="example1">
+
+            <div class="col-md-6 ">
+
+                          <div class="col dropdown btn-group d-flex flex-column">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Category List
+                            </button>
+                            
+                              
+                            
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" id="categoryDopdown">
+                              
+                            </ul>
+                          
+                          </div>
+                          <br> <br>
+                        <div class=" dropdown btn-group d-flex flex-column">
+                          
+                          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                          Product List
+                          </button>
+                       
+                          <div class="">
+                          <table class="col table">
+                  
+                            <thead>
+                              <tr>
+                                <th scope="col">id</th>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Category Name</th>
+                                
+                              </tr>
+                            </thead>
+                            <tbody id="pdata">
+                                
+                            </tbody>
+                          </table>
+                        </div>
+                          {{-- <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" id="productDopdown">
+                            
+                          </ul> --}}
+                        
+                        </div>
+          </div>
+
+
+
+
+        <table class="table">
+      
             <thead>
               <tr>
                 <th scope="col">id</th>
@@ -98,8 +149,7 @@
           </table>
         </div>
 
-    
-
+   
 <div class="dropdown btn-group">
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
    User List
@@ -121,7 +171,7 @@
  
 </div>
 
-<div class="dropdown btn-group">
+{{-- <div class="dropdown btn-group">
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
    Category List
   </button>
@@ -132,8 +182,8 @@
     
   </ul>
  
-</div>
-
+</div> --}}
+{{-- 
 <div class="dropdown btn-group">
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
    Product List
@@ -145,7 +195,7 @@
     
   </ul>
  
-</div>
+</div> --}}
 
 
 
@@ -179,11 +229,16 @@ function onClick(id) {
               success:function(res){
                   let str = '';
                   res.data.forEach(el =>{
-                    str+=`<li>
-                            <span class="dropdown-item" id="pro_${el.id}">${el.name}</span>
-                          </li>`
+                    str += `
+                  
+                    <tr>
+                                    <th scope="row"> ${el.id} </th>
+                                    <td class="col"> ${el.name}</td>
+                                    <td> ${el.cat_name} </td>
+                                   
+                                </tr>`
                   })
-                  $('#productDopdown').html(str);
+                  $('#pdata').html(str);
               }
           });
       }
@@ -197,7 +252,7 @@ function onClick(id) {
               success:function(res){
                   let str = '';
                   res.data.forEach(el =>{
-                    str+=`<li>
+                    str+=`<li onclick="onClick(${el.id})">
                             <span class="dropdown-item" id="cat_${el.id}">${el.name}</span>
                           </li>`
                   })
@@ -209,7 +264,6 @@ function onClick(id) {
     
 
         function callSearch(search_string){
-      
             $.ajax({
                 url:"{{route('search')}}",
                 method:'GET',
@@ -227,14 +281,13 @@ function onClick(id) {
                                            value="${p.status}" type="checkbox" ${p.status == 1 ? 'checked': ''}>
                                           <span class="slider round"></span>
                                       </label> 
-                                    </td>
+                                      </td>
                                 </tr>`
                     });
                     $('#data').html(str);
                 }
             });
         }
-
 
 
         $(document).ready(function(){
@@ -259,11 +312,9 @@ function onClick(id) {
                 onClick(CatId)
 
             })
-
-     
         });
     </script> 
-    <script>
+     <script>
       $(document).ready(function (){
           $("#example1").DataTable()
       });
@@ -289,5 +340,6 @@ function onClick(id) {
       });
       
     </script>
+
   </body>
 </html>
