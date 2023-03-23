@@ -190,5 +190,19 @@ class HomeController extends Controller
     return response()->json(['status'=>$products->count() >=1 ? true : false, 'data' => $products]);
 
    }
+
+   public function chng_stts(Request $request){
+
+    DB::table('products')->where('id',$request->id)->update([
+        'status'=>$request->status
+     ]);
+
+
+     return response()->json([
+        'code'=>'200',
+        'message'=>'status changed successfully',
+     ]);
+   
+   }
    
 }
