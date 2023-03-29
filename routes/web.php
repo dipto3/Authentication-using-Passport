@@ -20,3 +20,5 @@ Route::get('/search', [HomeController::class, 'search'])->name('search');
 Route::get('/category-by-user', [HomeController::class, 'categoryByUser'])->name('categoryByUser');
 Route::get('/product-by-category', [HomeController::class, 'productBycategory'])->name('productBycategory');
 Route::post('/tog-stts', [HomeController::class, 'chng_stts'])->name('status');
+Route::get('/map', [HomeController::class, 'map'])->name('status');
+Route::get('/qr', [HomeController::class, 'qr']);

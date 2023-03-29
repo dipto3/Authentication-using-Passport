@@ -15,7 +15,7 @@ class HomeController extends Controller
 
     $input = $request->all();
    $user = User::create($input);
-     
+
     return response()->json(['user'=>$user]);
 
    }
@@ -31,7 +31,7 @@ class HomeController extends Controller
         // $foruserid = Auth::user();
         //     $user_id = $foruserid->id;
         //     $request->uid =  $user_id;
-        
+
         $input = [...$request->all(), 'uid' =>$user->id];
         $category = Category::create($input);
         return response()->json(['category'=>$category]);
@@ -43,10 +43,10 @@ class HomeController extends Controller
    }
 
    public function p_store(Request $request){
-    
+
     $input = $request->all();
    $product = Product::create($input);
-     
+
     return response()->json(['product'=>$product]);
 
    }
@@ -82,7 +82,7 @@ class HomeController extends Controller
     $user = User::Create($data);
     if($user){
         return response()->json(['status'=>'success','message'=>'User Create Successfully','data'=>$user]);
-    
+
        }
        return response()->json(['status'=>'fail','message'=>'User Create fail']);
    }
@@ -90,7 +90,7 @@ class HomeController extends Controller
    public function login(Request $request){
     $validator = Validator::make($request->all(),[
 
-       
+
     'email'=>'required|email',
         'password'=>'required',
 
@@ -118,17 +118,17 @@ class HomeController extends Controller
         $user  = Auth::user();
         $user_id = $user->id;
     //  return $user_id;
-       
+
             $totacat = Category::where('uid',$id)->count();
 // return $totacat;
             $allcat = Category::where('uid',$id)->get();
-           
+
             return response()->json(['status'=>'success', 'TotalCategory'=>$totacat,'AllCategory'=>$allcat]);
-        
-     
+
+
    }
 
-   
+
 
    public function show_product($id){
 
@@ -143,10 +143,10 @@ class HomeController extends Controller
         //         $category['Products'] = [...$product];
         //     }
         // }
-        
+
         $product = Category::has('products')->with('products')->get();
-      
-        
+
+
         return response()->json(['status'=>'success', 'AllCategory'=>$product]);
    }
 
@@ -154,19 +154,19 @@ class HomeController extends Controller
 
    public function index(Request $request){
 
-    $products = Product::all(); 
+    $products = Product::all();
     // $product = Category::has('products')->with('products')->get();
     $users = User::all();
     $user  = Auth::user();
-  
-    
+
+
     $category = Category::where('uid',$request->id)->get();
     // $category = User::has('categories')->with('categories')->get();
     // return response()->json(['status'=>'success','cate'=>$products, 'products'=>$products,'users'=>$users]);
     return view('welcome',compact('products','users','category'));
    }
 
-   //search 
+   //search
    public function search(Request $request){
 
         $products = $request->search_string!='' ? Product::where('name','like','%'.$request->search_string.'%')->get() : Product::all();
@@ -178,7 +178,7 @@ class HomeController extends Controller
         // }
 
         return response()->json(['status'=>$products->count() >=1 ? true : false, 'products' => $products]);
-                      
+
    }
 
    public function categoryByUser(Request $request){
@@ -194,16 +194,30 @@ class HomeController extends Controller
 
    public function chng_stts(Request $request){
 
-    DB::table('products')->where('id',$request->id)->update([
-        'status'=>$request->status
-     ]);
+    // DB::table('products')->where('id',$request->id)->update([
+    //     'status'=>$request->status
+    //  ]);
+
+     $product = Product::find($request->id);
+     $product->status = $request->status;
+     $product->save();
 
 
      return response()->json([
         'code'=>'200',
         'message'=>'status changed successfully',
      ]);
-   
+
    }
-   
+
+   public function map(){
+
+    return view('location');
+   }
+
+   public function qr(){
+
+    return view('qr');
+   }
+
 }
